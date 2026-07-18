@@ -134,13 +134,29 @@ def job_key(job):
 
 def extract_link(job):
 
-    return (
+    if job.get("job_apply_link"):
+        return job["job_apply_link"]
 
-        job.get("job_apply_link")
-        or job.get("link")
-        or "No link available"
 
-    )
+    if job.get("link"):
+        return job["link"]
+
+
+    if job.get("apply_options"):
+
+        for option in job["apply_options"]:
+            if option.get("link"):
+                return option["link"]
+
+
+    if job.get("related_links"):
+
+        for link in job["related_links"]:
+            if link.get("link"):
+                return link["link"]
+
+
+    return "No link available"
 
 
 
